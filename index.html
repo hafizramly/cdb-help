@@ -1,71 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Cloud Dashboard for LabVIEW by LVCloud</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Cloud Dashboard Docs</title>
+        <meta name="viewport" content="width=device-width">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Cloud Dashboard for LabVIEW</h1>
-        <p>Documentation and Help</p>
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
 
-        <p class="view"><a href="https://github.com/LVCloud/cdb-help">View the Project on GitHub <small>LVCloud/cdb-help</small></a></p>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
 
+    </head>
+    <body>
+      <div id="wrap">
+        <div id="header">
 
-        <ul>
-          <li><a href="https://github.com/LVCloud/cdb-help/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/LVCloud/cdb-help/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/LVCloud/cdb-help">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <div class="navbar navbar-default navbar-fixed-top">
+          <div class="container">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="/"><i class="fa fa-cloud"></i> Cloud Dashboard Help Docs</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              </div>
+              <div class="navbar-collapse collapse" ng-controller="UserCtrl">
+                <ul class="nav navbar-nav">  
+                </ul>
+                <div class="navbar-header navbar-right">
+                  <ul class="nav navbar-nav">
+                    <li>
+                      <a href="https://cdb.niwsc.com/dashboard" class="navbar-link">Go To Cloud Dashboard</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+          </div>
+        </div>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+          <div class="jumbotron">
+            <div class="container">
+              <div class="header">
+                <h1 class="title">Cloud Dashboard Docs</h1>
+                <p class="lead">
+                  Dynamic web presence for your devices
+                </p>
+              </div>
+              </div>
+          </div>
+        </div>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+        <div id="main">
+        <div class="container">
+	<div class="row">
+		<div class="col-sm-9">
+<h1><span style="font-size: 18pt;">Introduction</span></h1>
+<p>The NI Cloud Dashboard Service enables LabVIEW developers to write VIs that dynamically create and populate their own web-hosted dashboard.  All programming is done in LabVIEW (no HTML, JavaScript, CSS, etc) and executed on the LabVIEW target, and the dashboard is immediately available through a web portal.  You, and people you select, access the dashboard at any time from anywhere through a web browser.</p>
+<p> </p>
+<p>NI is hosting this service on the cloud - all you have to do is create an NI Hosted Services account to gain and control access to the cloud dashboards you create and write the VIs that interact with the service. </p>
+<h5>Capabilities</h5>
+<p>Your NI Cloud Dashboard is controlled by the VI on your device, which creates and updates these features on its web portal:</p>
+<ul>
+<li>Basic Information - key/value pairs like &lt;Serial Number&gt;:&lt;DN0156&gt;</li>
+<li>Event messages - like "Device went online" and "Over-temperature condition"</li>
+<li>Data feeds - graphs of current data being sent from the device </li>
+<li>Triggers - toggles to initiate/terminate activities on the device</li>
+</ul>
+<p> </p>
+<p>Once you've created a dashboard you can use the portal to share it with other NI Cloud Dashboard users.</p>
+<p> </p>
+<p><img alt="NI Cloud Dashboard.png" class="jive-image" src="https://decibel.ni.com/content/servlet/JiveServlet/downloadImage/177697/NI+Cloud+Dashboard.png" style="display: block; margin-left: auto; margin-right: auto;" __jive_id="177697" /></p>
+<h5>Limitations</h5>
+<p>The NI Cloud Dashboard service is a research prototype and is not as robust as a supported web service.  Please limit your use of the service to eight devices, and a maximum of eight data feeds per device.  If you would like to conduct tests with larger numbers of devices and data feeds, please contact <a href="mailto:lvcloudoperations@ni.com">lvcloudoperations@ni.com</a> in advance.</p>
+<p> </p>
+<p><em>Over-use or abuse:</em>  If you generate too much activity NI will first request that you reduce your activity via the e-mail address associated with your NI Cloud Dashboard account ("your e-mail address").  If that fails, NI may terminate your devices or terminate your NI Cloud Dashboard account at its discretion.</p>
+<p> </p>
+<p><em>Clean-up and Purging</em>:  NI will periodically scan the service for "stale" devices, meaning there has been no recent activity on the service or the portal from that device, and delete those devices. NI will attempt to notify you in advance via the e-mail address associated with your NI Cloud Dashboard account.</p>
+<p> </p>
+<h1>System Requirements</h1>
+<p> <a href="http://www.ni.com/labview">LabVIEW 2013</a> or later and a PC or NI hardware with an internet connection.</p>
+<p> </p>
+<h1>Feedback &amp; Support</h1>
+<p>Please post any questions, comments, bug reports, or other feedback in the <a class="jive_macro jive_macro_thread" href="javascript:;" title="NI Cloud Dashboard Service Discussion" jivemacro="thread" _modifiedtitle="NI Cloud Dashboard Service Discussion" ___default_attr="23761">NI Cloud Dashboard Service Discussion</a>.</p>
+<p> </p>
+<p>The NI Cloud Dashboard Service is provided as an unsupported service.  If you encounter a problem with this service, have usage tips to share, etc., please post to the general discussion forum for this service: <a class="jive_macro jive_macro_thread" href="javascript:;" title="NI Cloud Dashboard Service Discussion" jivemacro="thread" _modifiedtitle="NI Cloud Dashboard Service Discussion" ___default_attr="23761">NI Cloud Dashboard Service Discussion</a>.  <span style="color: #ff0000;"><strong>Do not call National Instruments for support of this service.</strong></span></p>
+<p> </p>
+<p><span style="color: #ff0000;"><span style="color: #333333;">The attached Code is provided As Is.  It has not been tested or validated as a product, for use in a deployed application or system, or for use in hazardous environments.  You assume all risks for use of the Code and use of the Code is subject to the Sample Code License Terms which can be found at <a href="http://ni.com/samplecodelicense">http://ni.com/samplecodelicense</a>.</span><br /></span></p>
+<h1>Getting started with the NI Cloud Dashboard</h1>
+<h5>Create an NI Cloud Dashboard account</h5>
+<p>Here's how you get your account created</p>
+<ol>
+<li>Navigate to <a href="http://cdb.niwsc.com/dashboard/#/">cdb.niwsc.com/dashboard/#/</a></li>
+<li>Click/tap on "Create Free Account"</li>
+<li>Enter your e-mail address and click/tap "Sign Up"</li>
+<li>Check your e-mail inbox for a message containing your account creation instructions</li>
+</ol>
+<h5>Find your NI Cloud Dashboard portal</h5>
+<p>Complete the following steps to log into your NI Cloud Dashboard: </p>
+<ol>
+<li>Navigate to <a href="http://cdb.niwsc.com/dashboard/#/">cdb.niwsc.com/dashboard/#/</a></li>
+<li>Click/tap on "Sign in" </li>
+<li>Enter your e-mail address and password</li>
+</ol>
+<h5>Create and download an access key</h5>
+<p>The VIs you write will need a key to access your NI Cloud Dashboard service</p>
+<ol>
+<li>Sign in to your NI Cloud Dashboard portal from your development PC</li>
+<li>Click on "Keys"</li>
+<li>Click "Create New Key"</li>
+<li>Enter a name and expiration date, then select the permissions for this key</li>
+<ol>
+<li>For the example, select read, write, and enabled</li>
+</ol>
+<li>Find the new key in the list, and click/tap on "Download" to save it onto your development PC</li>
+<ol>
+<li>Give it an easy-to-remember name, like "keyFile.txt"</li>
+<li>Remember where you saved it.</li>
+</ol></ol>
+<h5>Get the Cloud Dashboard.vi example</h5>
+<p><span style="font-size: 10pt;">The example demonstrates how your VIs interact with the NI Cloud Dashboard service.  </span></p>
+<ol start="1" style="list-style-type: decimal;">
+<li><span style="font-size: 10pt;">Download the attached CloudDashboard.zip file.</span></li>
+<li><span style="font-size: 10pt;">Unzip the file to your local disk to create the clouddashboard.vip file</span></li>
+<li><span style="font-size: 10pt;">Run clouddashboard.vip (with VI Package Manager) and follow the instructions on the screen to:</span></li>
+<ol>
+<li><span style="font-size: 10pt;">Accept the license agreement</span></li>
+<li><span style="font-size: 10pt;">Choose the default location to install</span></li>
+<li><span style="font-size: 10pt;">Install an "NI Cloud Dashboard" link in LabVIEW help</span></li>
+<li><span style="font-size: 10pt;">Add a Cloud Dashboard VI palette to NI Add-ons</span></li>
+</ol></ol>
+<h5>Run the Cloud Dashboard.vi example</h5>
+<p><span style="font-size: 10pt;">These instructions can also be found on the NI Cloud Dashboard help docs online at: </span><a href="http://cdb-help.niwsc.com/" style="font-size: 10pt;">http://cdb-help.niwsc.com/</a><span style="font-size: 10pt;"> under "example"  </span></p>
+<ol start="1" style="list-style-type: decimal;">
+<li>Open the Cloud Dashboard.vi example in LabVIEW</li>
+<li>Enter the key you created and downloaded into the "file path to keyFile.txt" field</li>
+<li>Run the VI</li>
+<li>Sign in to your NI Cloud Dashboard portal at <a href="http://cdb.niwsc.com/dashboard/#/">cdb.niwsc.com/dashboard/#/</a></li>
+<li>Click/Tap on "Devices" to see your demo device</li>
+<li>Explore:</li>
+<ol>
+<li>Click on the chart icon to see data feeds from your device</li>
+<ol>
+<li>Currently, there aren't any</li>
+</ol>
+<li>Click on the cloud with up arrow icon to see triggers to control your VI.</li>
+<ol>
+<li>Click the "Initialize" trigger to:</li>
+<ol>
+<li>Create two data feeds</li>
+<li>Create a new "Start" trigger</li>
+</ol></ol>
+<li>Click the chart icon to see that data feeds have been added</li>
+<ol>
+<li>Note:  There isn't any data being published yet - you have to trigger that, too.</li>
+</ol>
+<li>Click the cloud with up arrow icon to see your triggers again</li>
+<ol>
+<li>Click on the "Start" trigger to:</li>
+<ol>
+<li>Tell your VI to start publishing simulated data</li>
+<li>Create two new triggers - "Done" and "Pause"</li>
+</ol></ol>
+<li>Return to the data feed area to see the data being published.</li>
+<ol>
+<li>Click on the eye icon to the left of each feed to hide/show that feed.</li>
+</ol>
+<li>Explore:</li>
+<ol>
+<li>The information icon - information about your device</li>
+<li>The envelope icon - messages from your device</li>
+<li>The people icon - share your cloud dashboard</li>
+<li>The gauge icon - see the complete dashboard.</li>
+</ol>
+<li>Return to the trigger area</li>
+<ol>
+<li>Click the "Pause" trigger to temporarily stop the data feeds</li>
+<li>Click the "Done" trigger when you are finished</li>
+<ol>
+<li>WARNING:  This will delete the device and all of the triggers, events, and data feeds associated with it.</li>
+<li>To see them again, re-run the VI</li>
+</ol></ol></ol></ol>
+<h5>Write your own VIs that create and manage cloud dashboards</h5>
+<p>Now that you have the Cloud Dashboard.vi example under your belt, and the VI palette installed in LabVIEW, start building your own dashboards.  The documents at <a href="http://cdb-help.niwsc.com/">http://cdb-help.niwsc.com/</a> and in LabVIEW help explain how to use the VIs and what shows up in the dashboard.</p>
+<h5></h5>
+<h5></h5>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/LVCloud">LVCloud</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+		</div>
+		<div class="col-sm-3">
+			<div id="home">
+				<h1>Topics</h1>
+				<ul class="list-unstyled">
+						
+					<li><h3 name="example">example</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/example/example-vi.html">Example VI</a></li>
+							
+							
+							
+						</ul>
+					</li>
+						
+					<li><h3 name="vis">vis</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/vis/vi-initialize.html">Initialize.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-register-device.html">Register Device.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-unregister-device.html">Unregister Device.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-publish-event.html">Publish Event.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-delete-event.html">Delete Event.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-create-feed.html">Create Feed.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-delete-feed.html">Delete Feed.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-publish-feed-data.html">Publish Feed Data.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-create-trigger.html">Create Trigger.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-delete-trigger.html">Delete Trigger.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-publish-trigger.html">Publish Trigger.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-read-trigger.html">Read Trigger.vi</a></li>
+							
+							
+							
+						</ul>
+					</li>
+						
+					<li><h3 name="dashboard">dashboard</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/dashboard/dashboard-keys.html">Keys</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-triggers.html">Device Triggers</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-sharing.html">Device Sharing</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-list.html">Device List</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-graph.html">Device Graph</a></li>
+							
+							
+							
+						</ul>
+					</li>
+						
+					<li><h3 name="demo">demo</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/demo/mobile-demo.html">Mobile Demo</a></li>
+							
+							
+							
+						</ul>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+        </div>
+      </div>
+      <div id="footer" class="footer">
+          <div>
+              <p class="muted credit">
+                  <a href="http://www.ni.com/legal/privacy/">Privacy</a> |
+                  <a href="http://www.ni.com/legal/termsofuse/unitedstates/us/">Terms of Use</a> |
+                  <a href="http://www.ni.com/legal/">Other Legal Info</a> | 2014 National Instruments Corporation. All rights reserved.
+              </p>
+          </div>
+      </div>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    </body>
 </html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Mobile Demo</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+
+    </head>
+    <body>
+      <div id="wrap">
+        <div id="header">
+
+        <div class="navbar navbar-default navbar-fixed-top">
+          <div class="container">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="/"><i class="fa fa-cloud"></i> Cloud Dashboard Help Docs</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              </div>
+              <div class="navbar-collapse collapse" ng-controller="UserCtrl">
+                <ul class="nav navbar-nav">  
+                </ul>
+                <div class="navbar-header navbar-right">
+                  <ul class="nav navbar-nav">
+                    <li>
+                      <a href="https://cdb.niwsc.com/dashboard" class="navbar-link">Go To Cloud Dashboard</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+          </div>
+        </div>
+
+          <div class="jumbotron">
+            <div class="container">
+              <div class="header">
+                <h1 class="title">Cloud Dashboard Docs</h1>
+                <p class="lead">
+                  Dynamic web presence for your devices
+                </p>
+              </div>
+              </div>
+          </div>
+        </div>
+
+        <div id="main">
+        <div class="container">
+	<div class="row">
+
+		<div class="col-sm-9">
+			<h2>Mobile Demo</h2>
+			<p class="meta">23 Jul 2014</p>
+			<div class="post">
+				    <script type="text/javascript">
+      function start() {
+        var shouldPost = true;
+        var deviceName = document.getElementById("name").value;
+        if(!deviceName) {
+          document.getElementById("name").setAttribute("placeholder", "that's not a name...");
+          return;
+        }
+        document.getElementById("input").setAttribute("style", "display:none");
+        var reporting = document.getElementById("reporting");
+        var headers = {
+            "Content-Type": "application/json",
+            "x-ni-apikey": "gDyCmaeZBXDUMkWgnwRskDlNAFjKquam",
+            };
+        var chunks = {x:[], y:[], z:[], a:[], b:[], c:[]};
+        var deviceId;
+        function createDevice() {
+          deviceId = "DemoDevice" + Math.floor(Math.random()*1000000);
+          $.ajax({async:false,
+            type:"POST",
+            headers:headers,
+            url:"http://cdb-dev.niwsc.com/deviceapi-2.0/rest/devices",
+            data:JSON.stringify({deviceType:"DemoDevice",deviceName:deviceName,serialNumber:deviceId})
+          });
+        }
+        createDevice();
+        document.getElementById("output").setAttribute("style", "");
+        function deleteDevice () {
+          var a = $.ajax({
+            async: false,
+            type: "DELETE",
+            headers: headers,
+            url: "http://cdb-dev.niwsc.com/deviceapi-2.0/rest/devices/" + deviceId
+          });
+          return null;
+        }
+        setTimeout(deleteDevice, 300000);//5 minutes
+        window.onunload = deleteDevice;
+        window.onbeforeunload = deleteDevice;//addEventListener("beforeunload", deleteDevice);
+        var channels = {};
+        function createChannel(tag, name, units) {
+          var a = $.ajax({
+            type: "POST",
+            headers: headers,
+            url: "http://cdb-dev.niwsc.com/deviceapi-2.0/rest/devices/" +deviceId + "/channels",
+            data: JSON.stringify({channelType:"DI",units:units,channelName:name})
+          }).success(function (d) {
+            channels[tag] = d.id;
+          });
+        }
+        createChannel("x", "X Accel", "m/s^2");
+        createChannel("y", "Y Accel", "m/s^2");
+        createChannel("z", "Z Accel", "m/s^2");
+        createChannel("a", "Alpha", "degrees");
+        createChannel("b", "Beta", "degrees");
+        createChannel("c", "Gamma", "degrees");
+
+        var controlId;
+        function createControl() {
+          $.ajax({
+            type: "POST",
+            async: false,
+            headers: headers,
+            url: "http://cdb-dev.niwsc.com/deviceapi-2.0/rest/devices/"+deviceId+"/controls",
+            data: JSON.stringify({type:"pushbutton",props:{},max:0,min:0,value:1,units:"",label:"Publish"})
+          }).success(function (d) {
+            controlId = d.id;
+          });
+        };
+        createControl();
+        function getControl() {
+          var a = $.ajax({
+            type:"GET",
+            headers:headers,
+            url: "http://cdb-dev.niwsc.com/deviceapi-2.0/rest/devices/"+deviceId+"/controls/"+controlId
+          }).success(function (d) {
+            shouldPost = d.value;
+          });
+        }
+        setInterval(getControl, 2000);
+        function publishData() {
+          var temp = [];
+          for(var tag in channels) {
+            if(chunks[tag].length !== 0) {
+              temp.push({id: channels[tag], data: chunks[tag]});
+            }
+          }
+          if(temp.length !== 0) {
+            $.ajax({
+              type: "PUT",
+              headers: headers,
+              url: "http://cdb-dev.niwsc.com/deviceapi-2.0/rest/devices/"+deviceId+"/channels/data",
+              data: JSON.stringify(temp)
+            });
+          }
+          chunks = {x:[], y:[], z:[], a:[], b:[], c:[]};
+        }
+        setInterval(publishData, 1000);
+
+        var x, y, z;
+        window.addEventListener("devicemotion", function(event) {
+          x = event.acceleration.x;
+          y = -event.acceleration.y;
+          z = event.acceleration.z;
+          document.getElementById("x").innerHTML = x;
+          document.getElementById("y").innerHTML = y;
+          document.getElementById("z").innerHTML = z;
+        }, false);
+
+        setInterval(function () {
+          var time = new Date().getTime();
+          chunks.x.push([time, x]);
+          chunks.y.push([time, y]);
+          chunks.z.push([time, z]);
+        }, 100 );
+
+        var a, b, c ;
+        window.addEventListener("deviceorientation", function(event) {
+          a = event.alpha;
+          b = -event.beta;
+          c = event.gamma;
+          document.getElementById("a").innerHTML = a;
+          document.getElementById("b").innerHTML = b;
+          document.getElementById("c").innerHTML = c;
+        }, false);
+
+        setInterval(function () {
+          var time = new Date().getTime();
+          chunks.a.push([time, a]);
+          chunks.b.push([time, b]);
+          chunks.c.push([time, c]);
+        }, 100);
+      }
+    </script>
+    <div id="input">
+            <div class="row" style="padding: 10px; padding-top: 30px;">
+                <div class="col-lg-4">
+                    <div class="input-group">
+                        <input type="text" autofocus="autofocus" class="form-control" placeholder="give your device a name" id="name" /> 
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" onclick="start()">Go!</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-4 -->
+            </div><!-- /.row -->
+
+
+
+
+    </div>
+    <div id="output" style="display:none">
+      <h3 id="status">Congrats! Your phone is now a Cloud Dashboard Device.</h3>
+      <p id="reporting">You are currently reporting your accelerometer data</p>
+      <p>
+        X:&nbsp;<span id="x">0</span><br/>
+        Y:&nbsp;<span id="y">0</span><br/>
+        Z:&nbsp;<span id="z">0</span><br/>
+        alpha:&nbsp;<span id="a">0</span><br/>
+        beta:&nbsp;<span id="b">0</span><br/>
+        gamma:&nbsp;<span id="c">0</span>
+      </p>
+      <p>
+        <small>Closing this page will remove this device's entry on CDB.</small><br/>
+        <small>The entry will also be removed after 5 minutes on this page.</small>
+      </p>
+    </div>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div id="home">
+				<h1>Topics</h1>
+
+				<ul class="list-unstyled">
+						
+					<li><h3 name="example">example</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/example/example-vi.html">Example VI</a></li>
+							
+							
+							
+						</ul>
+					</li>
+						
+					<li><h3 name="vis">vis</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/vis/vi-initialize.html">Initialize.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-register-device.html">Register Device.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-unregister-device.html">Unregister Device.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-publish-event.html">Publish Event.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-delete-event.html">Delete Event.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-create-feed.html">Create Feed.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-delete-feed.html">Delete Feed.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-publish-feed-data.html">Publish Feed Data.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-create-trigger.html">Create Trigger.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-delete-trigger.html">Delete Trigger.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-publish-trigger.html">Publish Trigger.vi</a></li>
+							
+							
+							
+							<li><a href="/vis/vi-read-trigger.html">Read Trigger.vi</a></li>
+							
+							
+							
+						</ul>
+					</li>
+						
+					<li><h3 name="dashboard">dashboard</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/dashboard/dashboard-keys.html">Keys</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-triggers.html">Device Triggers</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-sharing.html">Device Sharing</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-list.html">Device List</a></li>
+							
+							
+							
+							<li><a href="/dashboard/dashboard-device-graph.html">Device Graph</a></li>
+							
+							
+							
+						</ul>
+					</li>
+						
+					<li><h3 name="demo">demo</h3>
+						<ul>
+							
+							
+							
+							
+							
+							
+							
+							<li><a href="/demo/mobile-demo.html">Mobile Demo</a></li>
+							
+							
+							
+						</ul>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+        </div>
+      </div>
+      <div id="footer" class="footer">
+          <div>
+              <p class="muted credit">
+                  <a href="http://www.ni.com/legal/privacy/">Privacy</a> |
+                  <a href="http://www.ni.com/legal/termsofuse/unitedstates/us/">Terms of Use</a> |
+                  <a href="http://www.ni.com/legal/">Other Legal Info</a> | 2014 National Instruments Corporation. All rights reserved.
+              </p>
+          </div>
+      </div>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    </body>
+</html>
